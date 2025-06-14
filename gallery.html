@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery - TaskMaster</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .gallery-container {
+            max-width: 1200px;
+            margin: 120px auto 2rem;
+            padding: 2rem;
+        }
+
+        .gallery-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .gallery-filters {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1.5rem;
+            border: 2px solid var(--primary-color);
+            border-radius: 0.5rem;
+            background: none;
+            color: var(--primary-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 1rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            aspect-ratio: 3/2;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-item-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            color: white;
+            padding: 1rem;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-item-overlay {
+            transform: translateY(0);
+        }
+
+        .gallery-item-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .gallery-item-category {
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 2rem;
+            background: #f9fafb;
+            border-radius: 0.5rem;
+            margin: 2rem 0;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 1rem;
+            }
+
+            .gallery-filters {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">TaskMaster</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="main-feature.html">To-Do List</a></li>
+                <li><a href="gallery.html" class="active">Gallery</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <button class="mobile-nav-toggle" aria-controls="nav-links" aria-expanded="false">
+                <span class="sr-only">Menu</span>
+                <div class="hamburger"></div>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <div class="gallery-container">
+            <div class="gallery-header">
+                <h1>Our Gallery</h1>
+                <p>Explore our collection of productivity-inspiring images</p>
+            </div>
+
+            <div class="gallery-filters">
+                <button class="filter-btn active" data-category="all">All</button>
+                <button class="filter-btn" data-category="workspace">Workspace</button>
+                <button class="filter-btn" data-category="productivity">Productivity</button>
+                <button class="filter-btn" data-category="technology">Technology</button>
+                <button class="filter-btn" data-category="lifestyle">Lifestyle</button>
+            </div>
+
+            <div class="gallery-grid" id="galleryGrid">
+                <!-- Gallery items will be added dynamically via JavaScript -->
+            </div>
+
+            <div class="no-results" id="noResults">
+                <h3>No images found</h3>
+                <p>Try selecting a different category</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2024 TaskMaster. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Gallery data
+        const galleryItems = [
+            {
+                id: 1,
+                title: "Modern Workspace",
+                category: "workspace",
+                imageUrl: "https://images.pexels.com/photos/1181677/pexels-photo-1181677.jpeg"
+            },
+            {
+                id: 2,
+                title: "Daily Planning",
+                category: "productivity",
+                imageUrl: "https://images.pexels.com/photos/1226398/pexels-photo-1226398.jpeg"
+            },
+            {
+                id: 3,
+                title: "Tech Setup",
+                category: "technology",
+                imageUrl: "https://images.pexels.com/photos/1714208/pexels-photo-1714208.jpeg"
+            },
+            {
+                id: 4,
+                title: "Work-Life Balance",
+                category: "lifestyle",
+                imageUrl: "https://images.pexels.com/photos/933964/pexels-photo-933964.jpeg"
+            },
+            {
+                id: 5,
+                title: "Team Collaboration",
+                category: "workspace",
+                imageUrl: "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg"
+            },
+            {
+                id: 6,
+                title: "Smart Organization",
+                category: "productivity",
+                imageUrl: "https://images.pexels.com/photos/1226398/pexels-photo-1226398.jpeg"
+            },
+            {
+                id: 7,
+                title: "Digital Innovation",
+                category: "technology",
+                imageUrl: "https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg"
+            },
+            {
+                id: 8,
+                title: "Mindful Living",
+                category: "lifestyle",
+                imageUrl: "https://images.pexels.com/photos/3822622/pexels-photo-3822622.jpeg"
+            },
+            {
+                id: 9,
+                title: "Creative Space",
+                category: "workspace",
+                imageUrl: "https://images.pexels.com/photos/7070/space-desk-workspace-coworking.jpg"
+            },
+            {
+                id: 10,
+                title: "Task Management",
+                category: "productivity",
+                imageUrl: "https://images.pexels.com/photos/3243/pen-calendar-to-do-checklist.jpg"
+            },
+            {
+                id: 11,
+                title: "Smart Home Office",
+                category: "technology",
+                imageUrl: "https://images.pexels.com/photos/1957477/pexels-photo-1957477.jpeg"
+            },
+            {
+                id: 12,
+                title: "Wellness at Work",
+                category: "lifestyle",
+                imageUrl: "https://images.pexels.com/photos/4101143/pexels-photo-4101143.jpeg"
+            }
+        ];
+
+        // Gallery functionality
+        class Gallery {
+            constructor() {
+                this.currentFilter = 'all';
+                this.grid = document.getElementById('galleryGrid');
+                this.noResults = document.getElementById('noResults');
+                this.filterButtons = document.querySelectorAll('.filter-btn');
+
+                this.initializeEventListeners();
+                this.renderGallery();
+            }
+
+            initializeEventListeners() {
+                this.filterButtons.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        this.filterButtons.forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        this.currentFilter = btn.dataset.category;
+                        this.renderGallery();
+                    });
+                });
+            }
+
+            renderGallery() {
+                const filteredItems = this.currentFilter === 'all' 
+                    ? galleryItems 
+                    : galleryItems.filter(item => item.category === this.currentFilter);
+
+                this.grid.innerHTML = '';
+                
+                if (filteredItems.length === 0) {
+                    this.noResults.style.display = 'block';
+                } else {
+                    this.noResults.style.display = 'none';
+                    
+                    filteredItems.forEach(item => {
+                        const galleryItem = document.createElement('div');
+                        galleryItem.className = 'gallery-item';
+                        galleryItem.innerHTML = `
+                            <img src="${item.imageUrl}" alt="${item.title}">
+                            <div class="gallery-item-overlay">
+                                <div class="gallery-item-title">${item.title}</div>
+                                <div class="gallery-item-category">${item.category.charAt(0).toUpperCase() + item.category.slice(1)}</div>
+                            </div>
+                        `;
+                        this.grid.appendChild(galleryItem);
+                    });
+                }
+            }
+        }
+
+        // Initialize Gallery
+        document.addEventListener('DOMContentLoaded', () => {
+            new Gallery();
+        });
+    </script>
+</body>
+</html>
