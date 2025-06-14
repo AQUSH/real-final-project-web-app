@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - TaskMaster</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .contact-container {
+            max-width: 800px;
+            margin: 120px auto 2rem;
+            padding: 2rem;
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--border-color);
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .error {
+            border-color: var(--error-color);
+        }
+
+        .error-message {
+            color: var(--error-color);
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .success-message {
+            display: none;
+            background-color: var(--success-color);
+            color: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            animation: slideDown 0.3s ease;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+
+        .reset-button {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid var(--primary-color);
+            border-radius: 0.5rem;
+            background: none;
+            color: var(--primary-color);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .reset-button:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .submit-button {
+            padding: 0.75rem 1.5rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-button:hover {
+            background: var(--secondary-color);
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .contact-container {
+                margin: 100px 1rem 2rem;
+                padding: 1.5rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .button-group button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">TaskMaster</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="main-feature.html">To-Do List</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html" class="active">Contact</a></li>
+            </ul>
+            <button class="mobile-nav-toggle" aria-controls="nav-links" aria-expanded="false">
+                <span class="sr-only">Menu</span>
+                <div class="hamburger"></div>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <div class="contact-container">
+            <div class="contact-header">
+                <h1>Contact Us</h1>
+                <p>Have questions or feedback? We'd love to hear from you.</p>
+            </div>
+
+            <div class="success-message" id="successMessage">
+                Thank you for your message! We'll get back to you soon.
+            </div>
+
+            <form class="contact-form" id="contactForm" novalidate>
+                <div class="form-group">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" id="name" name="name" class="form-input" required placeholder="Enter your name">
+                    <div class="error-message" id="nameError">Please enter your name</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" id="email" name="email" class="form-input" required placeholder="Enter your email">
+                    <div class="error-message" id="emailError">Please enter a valid email address</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="subject" class="form-label">Subject</label>
+                    <input type="text" id="subject" name="subject" class="form-input" required placeholder="Enter subject">
+                    <div class="error-message" id="subjectError">Please enter a subject</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="message" class="form-label">Message</label>
+                    <textarea id="message" name="message" class="form-textarea" required placeholder="Enter your message"></textarea>
+                    <div class="error-message" id="messageError">Please enter your message</div>
+                </div>
+
+                <div class="button-group">
+                    <button type="reset" class="reset-button">Reset</button>
+                    <button type="submit" class="submit-button">Send Message</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2024 TaskMaster. All rights reserved.</p>
+    </footer>
+
+    <script>
+        class ContactForm {
+            constructor() {
+                this.form = document.getElementById('contactForm');
+                this.successMessage = document.getElementById('successMessage');
+                this.fields = {
+                    name: {
+                        input: document.getElementById('name'),
+                        error: document.getElementById('nameError'),
+                        minLength: 2
+                    },
+                    email: {
+                        input: document.getElementById('email'),
+                        error: document.getElementById('emailError')
+                    },
+                    subject: {
+                        input: document.getElementById('subject'),
+                        error: document.getElementById('subjectError'),
+                        minLength: 5
+                    },
+                    message: {
+                        input: document.getElementById('message'),
+                        error: document.getElementById('messageError'),
+                        minLength: 10
+                    }
+                };
+
+                this.initializeEventListeners();
+                this.setupCharacterCount();
+            }
+
+            initializeEventListeners() {
+                this.form.addEventListener('submit', (e) => this.handleSubmit(e));
+                
+                // Enhanced real-time validation with debounce
+                Object.values(this.fields).forEach(field => {
+                    let timeout;
+                    field.input.addEventListener('input', () => {
+                        clearTimeout(timeout);
+                        timeout = setTimeout(() => {
+                            this.validateField(field.input);
+                        }, 300);
+                    });
+
+                    field.input.addEventListener('blur', () => {
+                        this.validateField(field.input);
+                    });
+                });
+
+                this.form.addEventListener('reset', () => {
+                    this.resetForm();
+                });
+            }
+
+            setupCharacterCount() {
+                // Add character count for message field
+                const messageField = this.fields.message.input;
+                const countDisplay = document.createElement('div');
+                countDisplay.className = 'char-count';
+                messageField.parentNode.appendChild(countDisplay);
+
+                messageField.addEventListener('input', () => {
+                    const remaining = 500 - messageField.value.length;
+                    countDisplay.textContent = `${remaining} characters remaining`;
+                    countDisplay.style.color = remaining < 50 ? 'var(--error-color)' : 'inherit';
+                });
+            }
+
+            validateField(input) {
+                const field = this.fields[input.id];
+                let isValid = true;
+                let errorMessage = '';
+                
+                input.classList.remove('error');
+                field.error.style.display = 'none';
+
+                const value = input.value.trim();
+
+                // Enhanced validation rules
+                switch(input.id) {
+                    case 'email':
+                        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                        isValid = emailRegex.test(value);
+                        errorMessage = 'Please enter a valid email address';
+                        break;
+                    case 'name':
+                        isValid = value.length >= field.minLength;
+                        errorMessage = `Name must be at least ${field.minLength} characters`;
+                        break;
+                    case 'subject':
+                        isValid = value.length >= field.minLength;
+                        errorMessage = `Subject must be at least ${field.minLength} characters`;
+                        break;
+                    case 'message':
+                        isValid = value.length >= field.minLength;
+                        errorMessage = `Message must be at least ${field.minLength} characters`;
+                        break;
+                }
+
+                if (!isValid) {
+                    input.classList.add('error');
+                    field.error.textContent = errorMessage;
+                    field.error.style.display = 'block';
+                }
+
+                return isValid;
+            }
+
+            validateForm() {
+                let isValid = true;
+                
+                Object.values(this.fields).forEach(field => {
+                    if (!this.validateField(field.input)) {
+                        isValid = false;
+                    }
+                });
+
+                return isValid;
+            }
+
+            async handleSubmit(e) {
+                e.preventDefault();
+
+                if (this.validateForm()) {
+                    const submitButton = this.form.querySelector('.submit-button');
+                    submitButton.disabled = true;
+                    submitButton.textContent = 'Sending...';
+
+                    try {
+                        // Simulate API call
+                        await new Promise(resolve => setTimeout(resolve, 1000));
+                        
+                        this.successMessage.style.display = 'block';
+                        this.successMessage.textContent = 'Thank you! Your message has been sent successfully.';
+                        
+                        setTimeout(() => {
+                            this.resetForm();
+                        }, 3000);
+                    } catch (error) {
+                        this.successMessage.style.display = 'block';
+                        this.successMessage.style.backgroundColor = 'var(--error-color)';
+                        this.successMessage.textContent = 'An error occurred. Please try again later.';
+                    } finally {
+                        submitButton.disabled = false;
+                        submitButton.textContent = 'Send Message';
+                    }
+                }
+            }
+
+            resetForm() {
+                this.form.reset();
+                this.successMessage.style.display = 'none';
+                this.successMessage.style.backgroundColor = 'var(--success-color)';
+                
+                Object.values(this.fields).forEach(field => {
+                    field.input.classList.remove('error');
+                    field.error.style.display = 'none';
+                });
+
+                const charCount = document.querySelector('.char-count');
+                if (charCount) charCount.textContent = '500 characters remaining';
+            }
+        }
+
+        // Initialize Contact Form
+        document.addEventListener('DOMContentLoaded', () => {
+            new ContactForm();
+        });
+    </script>
+</body>
+</html>
