@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List - TaskMaster</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* Page specific styles */
+        .todo-container {
+            max-width: 800px;
+            margin: 120px auto 2rem;
+            padding: 2rem;
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .todo-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .todo-form {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .todo-input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 2px solid var(--border-color);
+            border-radius: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .todo-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .todo-list {
+            list-style: none;
+        }
+
+        .todo-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            background: #f9fafb;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+            animation: slideIn 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+
+        .todo-item.priority-high { border-left-color: #ef4444; }
+        .todo-item.priority-medium { border-left-color: #f59e0b; }
+        .todo-item.priority-low { border-left-color: #10b981; }
+        .todo-item.priority-normal { border-left-color: #6b7280; }
+
+        .todo-item.completed {
+            opacity: 0.7;
+            background: #f3f4f6;
+        }
+
+        .todo-item.completed .todo-text {
+            text-decoration: line-through;
+            color: #9ca3af;
+        }
+
+        .todo-item.overdue {
+            background: #fee2e2;
+        }
+
+        .todo-checkbox {
+            margin-right: 1rem;
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            accent-color: var(--primary-color);
+        }
+
+        .todo-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .todo-text {
+            font-size: 1rem;
+            color: #1f2937;
+        }
+
+        .todo-due-date {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .todo-due-date.overdue {
+            color: #ef4444;
+            font-weight: 500;
+        }
+
+        .todo-priority {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            text-transform: capitalize;
+            display: inline-block;
+        }
+
+        .todo-priority.high { background: #fecaca; color: #991b1b; }
+        .todo-priority.medium { background: #fef3c7; color: #92400e; }
+        .todo-priority.low { background: #d1fae5; color: #065f46; }
+        .todo-priority.normal { background: #f3f4f6; color: #374151; }
+
+        .todo-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .todo-edit,
+        .todo-delete {
+            background: none;
+            border: none;
+            padding: 0.5rem;
+            cursor: pointer;
+            border-radius: 0.25rem;
+            transition: all 0.2s ease;
+        }
+
+        .todo-edit:hover {
+            background: #e5e7eb;
+        }
+
+        .todo-delete:hover {
+            background: #fee2e2;
+        }
+
+        .notification {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            background: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: slideIn 0.3s ease;
+            z-index: 1000;
+        }
+
+        .notification.success {
+            background: #ecfdf5;
+            color: #065f46;
+            border-left: 4px solid #10b981;
+        }
+
+        .notification.error {
+            background: #fef2f2;
+            color: #991b1b;
+            border-left: 4px solid #ef4444;
+        }
+
+        .notification.fade-out {
+            animation: fadeOut 0.3s ease forwards;
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(10px); }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--primary-color);
+            border-radius: 0.5rem;
+            background: none;
+            color: var(--primary-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .todo-stats {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">TaskMaster</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="main-feature.html" class="active">To-Do List</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <button class="mobile-nav-toggle" aria-controls="nav-links" aria-expanded="false">
+                <span class="sr-only">Menu</span>
+                <div class="hamburger"></div>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <div class="todo-container">
+            <div class="todo-header">
+                <h1>My To-Do List</h1>
+                <p>Stay organized and boost your productivity</p>
+            </div>
+
+            <div class="filters">
+                <div class="filter-group">
+                    <span class="filter-label">Status:</span>
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="active">Active</button>
+                    <button class="filter-btn" data-filter="completed">Completed</button>
+                </div>
+                <div class="filter-group">
+                    <span class="filter-label">Priority:</span>
+                    <button class="filter-btn" data-priority="all">All</button>
+                    <button class="filter-btn" data-priority="high">High</button>
+                    <button class="filter-btn" data-priority="medium">Medium</button>
+                    <button class="filter-btn" data-priority="low">Low</button>
+                    <button class="filter-btn" data-priority="normal">Normal</button>
+                </div>
+            </div>
+
+            <form class="todo-form" id="todoForm">
+                <input type="text" class="todo-input" id="todoInput" placeholder="Add a task (use !high, !medium, or !low for priority)" required>
+                <button type="submit" class="cta-button">Add Task</button>
+            </form>
+
+            <ul class="todo-list" id="todoList">
+                <!-- Tasks will be added here dynamically -->
+            </ul>
+
+            <div class="todo-stats">
+                <p>Total tasks: <span id="totalTasks">0</span></p>
+                <p>Completed: <span id="completedTasks">0</span></p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2024 TaskMaster. All rights reserved.</p>
+    </footer>
+
+    <script src="js/scripts.js"></script>
+</body>
+</html>
